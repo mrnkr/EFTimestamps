@@ -1,6 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>EFTimestamps.Annotations</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Alvaro Nicoli</Authors>
+    <Company>Mr.NKR</Company>
+    <Description>Annotations to mark your props within your entities to be treated as timestamps for creation and last modification</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>First release! 😎</PackageReleaseNotes>
+    <PackageTags>EFCore;EntityFrameworkCore;DotnetCore</PackageTags>
+    <RepositoryUrl>https://github.com/mrnkr/EFTimestamps</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 

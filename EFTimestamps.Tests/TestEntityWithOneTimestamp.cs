@@ -3,7 +3,7 @@ using System;
 
 namespace EFTimestamps.Tests
 {
-    internal class TestEntity
+    internal class TestEntityWithOneTimestamp
     {
         private static int LastCreatedId = 0;
 
@@ -13,10 +13,7 @@ namespace EFTimestamps.Tests
         [CreatedAt]
         public DateTime CreatedAt { get; set; }
 
-        [UpdatedAt]
-        public DateTime UpdatedAt { get; set; }
-
-        public TestEntity()
+        public TestEntityWithOneTimestamp()
         {
             Id = ++LastCreatedId;
         }

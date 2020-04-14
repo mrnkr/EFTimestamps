@@ -7,7 +7,9 @@ namespace EFTimestamps.Tests
 {
     internal class TestContext : DbContext
     {
-        public DbSet<TestEntity> tests { get; set; }
+        public DbSet<TestEntityWithTwoTimestamps> TestsWithTwoTimestamps { get; set; }
+        public DbSet<TestEntityWithOneTimestamp> TestsWithOneTimestamp { get; set; }
+        public DbSet<TestEntityWithNoTimestamps> TestsWithNoTimestamps { get; set; }
 
         public TestContext(DbContextOptions<TestContext> options) : base(options) { }
 

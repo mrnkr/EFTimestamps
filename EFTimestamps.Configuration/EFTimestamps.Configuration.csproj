@@ -1,6 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>EFTimestamps.Configuration</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Alvaro Nicoli</Authors>
+    <Company>Mr.NKR</Company>
+    <Description>Extensions for the DbContext class to configure the annotations provided in EFTimestamps.Annotations</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>First release! 😎</PackageReleaseNotes>
+    <PackageTags>EFCore;EntityFrameworkCore;DotnetCore</PackageTags>
+    <RepositoryUrl>https://github.com/mrnkr/EFTimestamps</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
