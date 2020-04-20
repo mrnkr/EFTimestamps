@@ -72,3 +72,4 @@ public class TestContext : DbContext
 ### Changelog
 
 * 1.0.0 - First release
+* 1.0.1 - Bug fix

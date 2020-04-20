@@ -58,6 +58,7 @@ namespace EFTimestamps.Configuration
                 .GetType()
                 .GetProperties()
                 .Where(prop => prop.GetCustomAttribute(attributeType) != null)
+                .Where(prop => prop.CanWrite)
                 .FirstOrDefault();
         }
     }

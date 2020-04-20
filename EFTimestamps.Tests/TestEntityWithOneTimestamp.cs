@@ -11,7 +11,7 @@ namespace EFTimestamps.Tests
         public string DisplayName { get; set; }
 
         [CreatedAt]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; private set; }
 
         public TestEntityWithOneTimestamp()
         {
