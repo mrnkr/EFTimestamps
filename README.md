@@ -2,10 +2,14 @@
 
 [![NuGet version][nuget-image]][nuget-url]
 [![Downloads][downloads-image]][nuget-url]
+[![Build Status](https://travis-ci.com/mrnkr/EFTimestamps.svg?branch=master)](https://travis-ci.com/mrnkr/EFTimestamps)
+[![codecov](https://codecov.io/gh/mrnkr/EFTimestamps/branch/master/graph/badge.svg)](https://codecov.io/gh/mrnkr/EFTimestamps)
+[![License][license]][nuget-url]
 
 [nuget-image]:https://img.shields.io/nuget/v/EFTimestamps.Annotations
 [nuget-url]:https://www.nuget.org/packages/EFTimestamps.Annotations
 [downloads-image]:https://img.shields.io/nuget/dt/EFTimestamps.Annotations
+[license]:https://img.shields.io/github/license/mrnkr/EFTimestamps
 
 Put timestamps in your entities the easy way
 
