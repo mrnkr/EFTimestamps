@@ -1,0 +1,28 @@
+{
+  "name": "EFTimestamps",
+  "version": "1.0.0",
+  "description": "[![NuGet version][nuget-image]][nuget-url] [![Downloads][downloads-image]][nuget-url] [![Build Status](https://travis-ci.com/mrnkr/EFTimestamps.svg?branch=master)](https://travis-ci.com/mrnkr/EFTimestamps) [![codecov](https://codecov.io/gh/mrnkr/EFTimestamps/branch/master/graph/badge.svg)](https://codecov.io/gh/mrnkr/EFTimestamps) [![License][license]][nuget-url]",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrnkr/EFTimestamps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrnkr/EFTimestamps/issues"
+  },
+  "homepage": "https://github.com/mrnkr/EFTimestamps#readme",
+  "lint-staged": {
+    "*.cs": "dotnet format --include"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3"
+  }
+}
