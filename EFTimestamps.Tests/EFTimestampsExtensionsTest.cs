@@ -14,9 +14,9 @@ namespace EFTimestamps.Tests
         [Fact]
         public async Task PutsTimestamps()
         {
-            using (var ctx = new TestContext(_options))
+            using (TestContext ctx = new(_options))
             {
-                var test = new TestEntityWithTwoTimestamps
+                TestEntityWithTwoTimestamps test = new()
                 {
                     DisplayName = "Test display name"
                 };
@@ -25,7 +25,7 @@ namespace EFTimestamps.Tests
                 await ctx.SaveChangesAsync();
             }
 
-            using (var ctx = new TestContext(_options))
+            using (TestContext ctx = new(_options))
             {
                 var tests = await ctx.TestsWithTwoTimestamps.ToListAsync();
                 foreach (var test in tests)
@@ -42,9 +42,9 @@ namespace EFTimestamps.Tests
         [Fact]
         public async Task PutsCreationTimestampAlone()
         {
-            using (var ctx = new TestContext(_options))
+            using (TestContext ctx = new(_options))
             {
-                var test = new TestEntityWithOneTimestamp
+                TestEntityWithOneTimestamp test = new()
                 {
                     DisplayName = "Test display name"
                 };
@@ -53,7 +53,7 @@ namespace EFTimestamps.Tests
                 await ctx.SaveChangesAsync();
             }
 
-            using (var ctx = new TestContext(_options))
+            using (TestContext ctx = new(_options))
             {
                 var tests = await ctx.TestsWithOneTimestamp.ToListAsync();
                 foreach (var test in tests)
@@ -67,19 +67,17 @@ namespace EFTimestamps.Tests
         [Fact]
         public async Task ActsAsNoOp()
         {
-            using (var ctx = new TestContext(_options))
+            using TestContext ctx = new(_options);
+            TestEntityWithNoTimestamps test = new()
             {
-                var test = new TestEntityWithNoTimestamps
-                {
-                    DisplayName = "Test display name"
-                };
+                DisplayName = "Test display name"
+            };
 
-                ctx.TestsWithNoTimestamps.Add(test);
-                var changes = await ctx.SaveChangesAsync();
+            ctx.TestsWithNoTimestamps.Add(test);
+            var changes = await ctx.SaveChangesAsync();
 
-                // Just make sure it does not break
-                changes.Should().Be(1);
-            }
+            // Just make sure it does not break
+            changes.Should().Be(1);
         }
     }
 }
