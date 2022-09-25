@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>EFTimestamps.Configuration</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <Authors>Alvaro Nicoli</Authors>
     <Company>Mr.NKR</Company>
     <Description>Extensions for the DbContext class to configure the annotations provided in EFTimestamps.Annotations</Description>

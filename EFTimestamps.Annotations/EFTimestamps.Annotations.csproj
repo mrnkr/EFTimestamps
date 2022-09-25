@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>EFTimestamps.Annotations</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <Authors>Alvaro Nicoli</Authors>
     <Company>Mr.NKR</Company>
     <Description>Annotations to mark your props within your entities to be treated as timestamps for creation and last modification</Description>
