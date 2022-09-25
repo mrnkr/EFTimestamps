@@ -4,50 +4,45 @@ using EFTimestamps.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EFTimestamps.Configuration;
 
 public static class EFTimestampsExtensions
 {
-    public static void IndexTimestamps<T>(this EntityTypeBuilder<T> entityTypeBuilder) where T : class
+    public static void IndexTimestamps(this ModelBuilder modelBuilder)
     {
-        entityTypeBuilder.IndexCreatedAtProperty();
-        entityTypeBuilder.IndexUpdatedAtProperty();
-    }
-
-    private static void IndexCreatedAtProperty<T>(this EntityTypeBuilder<T> entityTypeBuilder) where T : class
-    {
-        var createdAtProperty = typeof(T).GetProperties().FirstOrDefault(prop => prop.GetCustomAttribute<CreatedAtAttribute>() is not null);
-        if (createdAtProperty is not null)
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            entityTypeBuilder.HasIndex(createdAtProperty.Name);
+            IndexAnnotatedProperty<CreatedAtAttribute>(entityType);
+            IndexAnnotatedProperty<UpdatedAtAttribute>(entityType);
         }
     }
 
-    private static void IndexUpdatedAtProperty<T>(this EntityTypeBuilder<T> entityTypeBuilder) where T : class
+    private static void IndexAnnotatedProperty<TAttribute>(IMutableEntityType entityType) where TAttribute : Attribute
     {
-        var updatedAtProperty = typeof(T).GetProperties().FirstOrDefault(prop => prop.GetCustomAttribute<UpdatedAtAttribute>() is not null);
-        if (updatedAtProperty is not null)
+        var properties = entityType.GetProperties();
+        var property = properties.FirstOrDefault(prop => prop.PropertyInfo?.GetCustomAttribute<TAttribute>() is not null);
+        if (property is not null)
         {
-            entityTypeBuilder.HasIndex(updatedAtProperty.Name);
+            entityType.AddIndex(property);
         }
     }
 
     public static void UpdateTimestamps(this DbContext ctx)
     {
-        ctx.PutCreatedAt();
-        ctx.PutUpdatedAt();
+        PutTimestamp<CreatedAtAttribute>(ctx);
+        PutTimestamp<UpdatedAtAttribute>(ctx);
     }
 
-    private static void PutCreatedAt(this DbContext ctx)
+    private static void PutTimestamp<TAttribute>(DbContext ctx) where TAttribute : Attribute
     {
         var newEntries = ctx.ChangeTracker.Entries()
             .Where(entry => entry.State == EntityState.Added);
 
         foreach (var entry in newEntries)
         {
-            var prop = ctx.GetMarkedProperty(entry, typeof(CreatedAtAttribute));
+            var prop = GetMarkedProperty(entry, typeof(TAttribute));
 
             if (prop is null)
             {
@@ -58,32 +53,12 @@ public static class EFTimestampsExtensions
         }
     }
 
-    private static void PutUpdatedAt(this DbContext ctx)
-    {
-        var updatedEntries = ctx.ChangeTracker.Entries()
-            .Where(entry => entry.State == EntityState.Added || entry.State == EntityState.Modified);
-
-        foreach (var entry in updatedEntries)
-        {
-            var prop = ctx.GetMarkedProperty(entry, typeof(UpdatedAtAttribute));
-
-            if (prop is null)
-            {
-                continue;
-            }
-
-            prop.SetValue(entry.Entity, DateTime.UtcNow);
-        }
-    }
-
-    private static PropertyInfo? GetMarkedProperty(this DbContext ctx, EntityEntry entry, Type attributeType)
+    private static PropertyInfo? GetMarkedProperty(EntityEntry entry, Type attributeType)
     {
         return entry
             .Entity
             .GetType()
             .GetProperties()
-            .Where(prop => prop.GetCustomAttribute(attributeType) is not null)
-            .Where(prop => prop.CanWrite)
-            .FirstOrDefault();
+            .FirstOrDefault(prop => prop.GetCustomAttribute(attributeType) is not null && prop.CanWrite);
     }
 }

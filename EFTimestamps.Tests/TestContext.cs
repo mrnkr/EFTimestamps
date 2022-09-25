@@ -14,9 +14,7 @@ internal class TestContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TestEntityWithTwoTimestamps>().IndexTimestamps();
-        modelBuilder.Entity<TestEntityWithOneTimestamp>().IndexTimestamps();
-        modelBuilder.Entity<TestEntityWithNoTimestamps>().IndexTimestamps();
+        modelBuilder.IndexTimestamps();
     }
 
     public override int SaveChanges()
