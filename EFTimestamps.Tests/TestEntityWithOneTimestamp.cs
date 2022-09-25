@@ -1,21 +1,22 @@
-using EFTimestamps.Annotations;
 using System;
+
+using EFTimestamps.Annotations;
 
 namespace EFTimestamps.Tests
 {
     internal class TestEntityWithOneTimestamp
     {
-        private static int LastCreatedId = 0;
+        private static int s_lastCreatedId = 0;
 
         public int Id { get; set; }
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         [CreatedAt]
         public DateTime CreatedAt { get; private set; }
 
         public TestEntityWithOneTimestamp()
         {
-            Id = ++LastCreatedId;
+            Id = ++s_lastCreatedId;
         }
     }
 }

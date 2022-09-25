@@ -1,80 +1,84 @@
-using System;
+using FluentAssertions;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
 
 namespace EFTimestamps.Tests
 {
-    [TestClass]
     public class EFTimestampsExtensionsTest
     {
-        private readonly DbContextOptions<TestContext> options = new DbContextOptionsBuilder<TestContext>()
+        private readonly string _dateFormat = "yyyy-MM-ddTH:mm";
+        private readonly DbContextOptions<TestContext> _options = new DbContextOptionsBuilder<TestContext>()
             .UseInMemoryDatabase("test_db")
             .Options;
 
-        [TestMethod]
+        [Fact]
         public async Task PutsTimestamps()
         {
-            using (var ctx = new TestContext(options))
+            using (var ctx = new TestContext(_options))
             {
-                var test = new TestEntityWithTwoTimestamps();
-                test.DisplayName = "Test display name";
+                var test = new TestEntityWithTwoTimestamps
+                {
+                    DisplayName = "Test display name"
+                };
 
                 ctx.TestsWithTwoTimestamps.Add(test);
                 await ctx.SaveChangesAsync();
             }
 
-            using (var ctx = new TestContext(options))
+            using (var ctx = new TestContext(_options))
             {
                 var tests = await ctx.TestsWithTwoTimestamps.ToListAsync();
                 foreach (var test in tests)
                 {
-                    var format = "yyyy-MM-ddTH:mm";
-                    var createdAt = test.CreatedAt.ToString(format);
-                    var updatedAt = test.UpdatedAt.ToString(format);
-                    Assert.AreEqual(expected: DateTime.UtcNow.ToString(format), createdAt);
-                    Assert.AreEqual(expected: DateTime.UtcNow.ToString(format), updatedAt);
+                    var createdAt = test.CreatedAt.ToString(_dateFormat);
+                    var updatedAt = test.UpdatedAt.ToString(_dateFormat);
+
+                    createdAt.Should().Be(DateTime.UtcNow.ToString(_dateFormat));
+                    updatedAt.Should().Be(DateTime.UtcNow.ToString(_dateFormat));
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task PutsCreationTimestampAlone()
         {
-            using (var ctx = new TestContext(options))
+            using (var ctx = new TestContext(_options))
             {
-                var test = new TestEntityWithOneTimestamp();
-                test.DisplayName = "Test display name";
+                var test = new TestEntityWithOneTimestamp
+                {
+                    DisplayName = "Test display name"
+                };
 
                 ctx.TestsWithOneTimestamp.Add(test);
                 await ctx.SaveChangesAsync();
             }
 
-            using (var ctx = new TestContext(options))
+            using (var ctx = new TestContext(_options))
             {
                 var tests = await ctx.TestsWithOneTimestamp.ToListAsync();
                 foreach (var test in tests)
                 {
-                    var format = "yyyy-MM-ddTH:mm";
-                    var createdAt = test.CreatedAt.ToString(format);
-                    Assert.AreEqual(expected: DateTime.UtcNow.ToString(format), createdAt);
+                    var createdAt = test.CreatedAt.ToString(_dateFormat);
+                    createdAt.Should().Be(DateTime.UtcNow.ToString(_dateFormat));
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ActsAsNoOp()
         {
-            using (var ctx = new TestContext(options))
+            using (var ctx = new TestContext(_options))
             {
-                var test = new TestEntityWithNoTimestamps();
-                test.DisplayName = "Test display name";
+                var test = new TestEntityWithNoTimestamps
+                {
+                    DisplayName = "Test display name"
+                };
 
                 ctx.TestsWithNoTimestamps.Add(test);
                 var changes = await ctx.SaveChangesAsync();
 
                 // Just make sure it does not break
-                Assert.AreEqual(expected: 1, actual: changes);
+                changes.Should().Be(1);
             }
         }
     }
