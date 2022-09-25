@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace EFTimestamps.Annotations;
 
-namespace EFTimestamps.Annotations
+[AttributeUsage(AttributeTargets.Property)]
+public class CreatedAtAttribute : Attribute
 {
-    public class CreatedAtAttribute : Attribute
-    {
-    }
 }

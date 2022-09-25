@@ -2,38 +2,44 @@ using EFTimestamps.Configuration;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EFTimestamps.Tests
+namespace EFTimestamps.Tests;
+
+internal class TestContext : DbContext
 {
-    internal class TestContext : DbContext
+    public DbSet<TestEntityWithTwoTimestamps> TestsWithTwoTimestamps { get; set; } = null!;
+    public DbSet<TestEntityWithOneTimestamp> TestsWithOneTimestamp { get; set; } = null!;
+    public DbSet<TestEntityWithNoTimestamps> TestsWithNoTimestamps { get; set; } = null!;
+
+    public TestContext(DbContextOptions<TestContext> options) : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public DbSet<TestEntityWithTwoTimestamps> TestsWithTwoTimestamps { get; set; } = null!;
-        public DbSet<TestEntityWithOneTimestamp> TestsWithOneTimestamp { get; set; } = null!;
-        public DbSet<TestEntityWithNoTimestamps> TestsWithNoTimestamps { get; set; } = null!;
+        modelBuilder.Entity<TestEntityWithTwoTimestamps>().IndexTimestamps();
+        modelBuilder.Entity<TestEntityWithOneTimestamp>().IndexTimestamps();
+        modelBuilder.Entity<TestEntityWithNoTimestamps>().IndexTimestamps();
+    }
 
-        public TestContext(DbContextOptions<TestContext> options) : base(options) { }
+    public override int SaveChanges()
+    {
+        this.UpdateTimestamps();
+        return base.SaveChanges();
+    }
 
-        public override int SaveChanges()
-        {
-            this.UpdateTimestamps();
-            return base.SaveChanges();
-        }
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        this.UpdateTimestamps();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            this.UpdateTimestamps();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        this.UpdateTimestamps();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            this.UpdateTimestamps();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            this.UpdateTimestamps();
-            return base.SaveChangesAsync(cancellationToken);
-        }
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        this.UpdateTimestamps();
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

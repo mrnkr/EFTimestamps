@@ -1,15 +1,14 @@
-namespace EFTimestamps.Tests
+namespace EFTimestamps.Tests;
+
+internal class TestEntityWithNoTimestamps
 {
-    internal class TestEntityWithNoTimestamps
+    private static int s_lastCreatedId = 0;
+
+    public int Id { get; set; }
+    public string? DisplayName { get; set; }
+
+    public TestEntityWithNoTimestamps()
     {
-        private static int s_lastCreatedId = 0;
-
-        public int Id { get; set; }
-        public string? DisplayName { get; set; }
-
-        public TestEntityWithNoTimestamps()
-        {
-            Id = ++s_lastCreatedId;
-        }
+        Id = ++s_lastCreatedId;
     }
 }
